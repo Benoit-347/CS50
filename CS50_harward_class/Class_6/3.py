@@ -22,4 +22,6 @@ def c():
 def main2():
     a()
     c()
+
 main2()
+ 
