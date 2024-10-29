@@ -16,7 +16,7 @@ def create_dict():
             c.append(dict)
     return c
 
-def printd(a):
+def print_nested_dict(a):
     for i in a:
         print(f"{i['name']} is in {i['class']}")
 
@@ -30,8 +30,8 @@ def printd(a):
 #    return d
 
 def main1():
-
-    printd(create_dict())
+    print(create_dict())
+    print_nested_dict(create_dict())
 
 #or
 
@@ -46,12 +46,12 @@ def create_list():
     return a
 
 
-def printd(a):
+def print_nested_cloumn_list(a):
     for i in range(len(a[0])):
         print(f"{a[0][i]} is in {a[1][i]}")
 
 
-def return_row(a):
+def return_as_row(a):
     b =[]
     for j in range(len(a[0])):
         c = []
@@ -60,7 +60,7 @@ def return_row(a):
         b.append(c)    
     return b
     
-def return_dict(a):
+def return_as_dict(a):
     b =[]
     for j in range(len(a[0])):
         c = {}
@@ -68,10 +68,10 @@ def return_dict(a):
         c["class"] = a[1][j]
         b.append(c)    
     return b
-print(return_dict(create_list()))    
+  
             
         
 def main2():
-    printd(create_list())
-
+    print_nested_cloumn_list(create_list())
+    print(return_as_dict(create_list()))  
 main2()
