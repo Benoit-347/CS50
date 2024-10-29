@@ -51,6 +51,26 @@ def printd(a):
         print(f"{a[0][i]} is in {a[1][i]}")
 
 
+def return_row(a):
+    b =[]
+    for j in range(len(a[0])):
+        c = []
+        for i in range(len(a)):
+            c.append(a[i][j])
+        b.append(c)    
+    return b
+    
+def return_dict(a):
+    b =[]
+    for j in range(len(a[0])):
+        c = {}
+        c["name"] = a[0][j]
+        c["class"] = a[1][j]
+        b.append(c)    
+    return b
+print(return_dict(create_list()))    
+            
+        
 def main2():
     printd(create_list())
 
