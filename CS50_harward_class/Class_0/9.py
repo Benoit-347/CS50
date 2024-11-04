@@ -1,34 +1,33 @@
-a = float(5.5)
-#converts float to int by removing decimal and converting to int
-def main():
-    b = int(a)
-    print(b)
+#write our own functions?
+#use def statement
 
-def usinground():
-    #using round fn
-    print(round(a))
-    x = 2.2232
-    y  = round(x,4)
-    #used to round off decimal places, (default val is 0 and converts to int), number next shows upto how many decimal places
-    print(y)
-    print(int(y))
+#syn:
+#def <fn_name>():
+#    <tasks>
 
-def using_special_print():
-    x =99999.88888
-    print(f"{x:,}")
-    #for the variable in flower brackets, show comma after every 3 digits in the printed message
-    print(f"{x:.2f}")
-    #in format string in flower brackets colon then .n denotes number of digits roundoff to, does same as function below:
-    print(round(x,2))
+def a():
+    print("hello")
 
-def usingmath():
-    #lowest integer not less than a and highest integer not more than a
-    import math       
-    int_value_floor = math.floor(a)  # Results in 3
-    int_value_ceil = math.ceil(a)
-    print(int_value_floor, int_value_ceil)
 
-main()
-usinground()
-using_special_print()
-usingmath()
+#in Python, function declarations are processed when the code is executed
+#when the code is executed, but the function's body code is not executed until the function is called
+
+# When Py interpreter reaches a def statement, it creates a function object and assigns it to the function's name, making it available for later use.
+
+
+#can do operations by using parameters (para -> var representing input during fn declaration)
+def hello(b):   #here b is a parameter
+    print(f"hello {b}")
+
+hello("benoit") #here "benoit" is a argument
+#note: the var b is defined only in local scope
+
+
+#how to store value after function doing work?
+#1 return, 2 global
+def get_num():
+    n = int(input("enter number:"))
+    return n #temporaryly gives the value (next to return) when fn call is used (when assigned or taken as input for another fn/operator)
+print(get_num())
+
+#abstraction: potraying a idea(potentially complex) into language

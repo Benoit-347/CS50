@@ -12,6 +12,9 @@ a, b,c = a.split("o")
 print(a)
 print(b)
 print(c)
-#need to convert string to another character
 
-print(a.replace("e", "ooo"))
+
+#need to convert string to another character
+#no remove fn in str, use replace
+a.replace("A", "benoit") #value initial, final
+print(a)

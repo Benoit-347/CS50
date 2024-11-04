@@ -1,0 +1,1 @@
+https://hianime.to/watch/failure-frame-i-became-the-strongest-and-annihilated-everything-with-low-level-spells-19237?ep=127900
