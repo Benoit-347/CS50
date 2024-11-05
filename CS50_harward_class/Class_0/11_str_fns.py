@@ -26,12 +26,12 @@ print(a)
 #4 split
 #used to convert the str to multiple str at specified character
 a = "hello world"
-a = a.split()
+b = a.split()
 #default is space
 #makes multiple strings (depending on how many characters match split agrument) by default stored as list
-print(a)
+print(b)
 
-a, b,c = a.split("o")
+a,b,c = a.split("o")
 # split thrice 
 #removes the character where split occured
 print(a,b,c)
@@ -43,3 +43,7 @@ print(a,b,c)
 a = "hi bro A b c"
 a.replace("A", "benoit")
 print(a)
+
+#note:list also has built in fn sum(<iterable element>)  #iterable element is list, tuple
+l1 = [1,2,4]
+print(sum(l1))

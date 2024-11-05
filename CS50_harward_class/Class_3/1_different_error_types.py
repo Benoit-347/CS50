@@ -8,3 +8,7 @@ def Value_Error():
 #NameError: Variable name error(usually not defined)
 def Name_Error():
     print(b)
+
+#AttributeError
+#NameError
+#RuntimeError	Raised when an error does not fall under any other category.

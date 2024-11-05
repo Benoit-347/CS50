@@ -18,3 +18,9 @@ def is_even(a):
     else:
         return 0
 main()
+
+a = []
+if a:
+    print("returned T")
+else:
+    print("returned F")

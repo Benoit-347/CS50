@@ -33,9 +33,9 @@ def using_special_print():
 def usingmath():
     #lowest integer not less than a and highest integer not more than a
     import math       
-    int_value_floor = math.floor(a)  # Results in 3
-    int_value_ceil = math.ceil(a)
-    print(f"5.5 math module floor,ceil: {int_value_floor, int_value_ceil}")
+    lower_int = math.floor(a)  # Results in 3
+    higher_int = math.ceil(a)
+    print(f"5.5 math module floor,ceil: {lower_int, higher_int}")
 
 
 main()
