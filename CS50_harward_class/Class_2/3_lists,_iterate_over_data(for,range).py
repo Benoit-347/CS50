@@ -14,6 +14,8 @@ print("end")
 
 
 #to specify number of times to repeat in for loop:
+
+#a for statement simplifies no of times to repeat (without you maually creating start stop, increment)
 #use range: returns a list of n numbers
 
 for i in range(0 , 3, 1):#begin at 0(default), stop before 3(required), increment at 0(default)
