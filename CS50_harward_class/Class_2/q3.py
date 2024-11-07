@@ -1,8 +1,15 @@
 #q) WAP fn to print a box a lenght and breath using # per square unit
 def square(a, b):
     for i in range(a):
-        print("#"*b)
-        
+        print("#"*b)        
+
+#or using nested loops:
+
+def square(a,b):
+    for i in range(a):
+        for i in range(b):
+            print("#", end = "")
+        print()
 square(3,3)
 
 def hollow_square(a, b):

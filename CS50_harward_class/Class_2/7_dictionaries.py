@@ -7,6 +7,8 @@ for i in a:
 print("end1")
 #how to assign values to data with an index name and the value?
 #dictionary (in curly braces)
+#it is associating something with something else
+
 dictionary_name = {"a":1, "b":2, "c":3} #key/index name, value pair
 print(dictionary_name["a"]) #in traversing for the index int value we give the key name which takes
                             # the value associated with it
