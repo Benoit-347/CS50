@@ -19,4 +19,4 @@ def get_valid2():
         if "@" in a:
             print("validated")
             break
-get_valid()
+get_valid1()
