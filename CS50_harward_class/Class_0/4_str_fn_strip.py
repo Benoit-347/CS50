@@ -1,5 +1,5 @@
 a = "benoit"
-#using special print (f) to use special format for print, curly brackets denote variable
+#using special format of string (f) to then return and print, curly brackets denote variable
 print(f"hi {a}")
 
 #almost all characters not in curly braces in taken as str
@@ -14,8 +14,8 @@ a = a.strip()
 
 
 print(f"1. hi{a}")
-a = a.strip("h")
-#removes all "h" only at end and beginning
+a = a.strip("habc")
+#removes any character mentioned in strip from only at end and beginning
 print(f"2. hi{a}")
 
 
