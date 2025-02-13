@@ -1,4 +1,4 @@
-
+# usually program contains data during runtime, this pauses runtime to take input
 #what is return?
 
 #by taking instructions you can do operations, but to hand back a product after operations is called return

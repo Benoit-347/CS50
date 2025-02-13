@@ -1,3 +1,4 @@
+# 2 algos: 1. use print setting, 2. add str to geve output
 a = "the string 1"
 b = 100/2
 c = 100//2

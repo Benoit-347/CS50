@@ -30,4 +30,4 @@ def strip_it(a, b):
                 flag1 = 1
         result += i
     return result[::-1]
-print(strip_it("aaahelloaaa", "a"))
+print(strip_it("aaahelloaaa", "ahel"))
