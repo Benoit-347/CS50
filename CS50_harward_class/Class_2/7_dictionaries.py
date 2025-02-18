@@ -5,7 +5,7 @@ a = [b, c]
 for i in a:
     print(i)
 print("end1")
-#how to assign values to data with an index name and the value?
+#how to assign values to data with an custom index name and the value?
 #dictionary (in curly braces)
 #it is associating something with something else
 

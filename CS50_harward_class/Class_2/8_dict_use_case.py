@@ -6,5 +6,5 @@ a = [{"name":"benoit", "rank":2, "game":"english"},
 ]
 # 2 D dictionary
 for i in a:
-    print(i["name"], i["rank"], i["game"])
+    print(i["name"], "rank:", i["rank"], i["game"])
     #takes element(the dict1) and value asssociated with index name of "name" in element is benoit

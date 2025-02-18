@@ -10,7 +10,10 @@ except:
     try:
      float(a)
     except:
-     str(a)
+        try:
+            str(a)
+        except:
+           bool(a)
 #type function
 print(type(a))
 print("hi", type("hi").__name__)

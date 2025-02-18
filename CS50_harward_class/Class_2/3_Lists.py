@@ -33,8 +33,8 @@ print(f"del: {l1}")
 #for copy the reference to the same inner list is shared.
 
 l1 = [1,[2,3],3,4]
-l2 = copy.copy(l1)
-l2[1] = 100
+l2 = l1.copy()
+l2[0] = 100
 print(f"list l1: {l1}, id l1: {id(l1)}, id l2: {id(l2)}")   #the inner data ele is not changed so data changd is from parent branch -> not shared ref
 l2[1][1] = 10
 print(f"list l1: {l1}, id l1: {id(l1)}, id l2: {id(l2)}")

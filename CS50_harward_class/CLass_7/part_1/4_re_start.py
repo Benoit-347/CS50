@@ -14,21 +14,23 @@ def a():
 #want to set number of characters before/ after str?
 
 #syn explain: 
-# only "." = any character except newline
+"""
+pattern has 2 factors:
+    1. the character
+    2. no. of rep
 
-#to set num of char:
-# "<any_char><symbol>" pair = number of repitions to the character before it.
+1. character is represented in str "a" or "c"
+   to represent any char: "." (period is used) -> any character except newline
 
+2. set num of char:
+   "<char><symbol>" symbol = number of repitions to the character before it.
+"""
 #symbols:   
-# "*" = 0 or more
-# "+" = 1 or more
+# "*" = infinite
+# "+" = 1 to infinite
 # "?" = 0 or 1
 # "{m}"" = m rep
-# "{m,n}"" = m to n rep
-
-
-#syn(x):
-#re.search("<any char = .>.<symbol><str>")
+#range of reps: {m,n} = m to n rep
 
 
 def charac_before():

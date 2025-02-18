@@ -1,3 +1,4 @@
+#we want to use a logic of or for characters in search like "a" or "b" in cse b
 # To define what chareacters are allowed or by what characters are to be excluded
 
 # [] = set of characters

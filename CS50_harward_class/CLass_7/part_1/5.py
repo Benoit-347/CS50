@@ -12,3 +12,18 @@ else:
 
 string = "hibyehibye"
 print(re.findall("^hibye$", string))
+
+#using search -> span:
+from re import search
+text = "hello world"
+a = search("o", text)
+print(a)
+b = a.span()
+print(b)
+text1 = text[0:b[0]] + "*" + text[b[0]+1:]
+print(text1)
+
+#using sub
+
+def temp():
+    result = re.sub(pattern, replacement, text, count=1)  # Replaces only the first match

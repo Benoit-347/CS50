@@ -41,7 +41,7 @@ print(a,b,c)
 #to convert a particular value in string to another character
 #no remove fn in str, use replace
 a = "hi bro A b c"
-a.replace("A", "benoit")
+a = a.replace("A", "benoit")
 print(a)
 
 #note:list also has built in fn sum(<iterable element>)  #iterable element is list, tuple

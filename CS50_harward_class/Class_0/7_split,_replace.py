@@ -15,6 +15,8 @@ print(c)
 
 
 #need to convert string to another character
-#no remove fn in str, use replace
-a.replace("A", "benoit") #value initial, final
+
+a = a.replace("A", "benoit") #value initial, final
 print(a)
+
+#The replace fn returns a value, does not replace original variable

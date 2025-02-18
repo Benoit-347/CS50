@@ -1,4 +1,5 @@
 #how to check/validate input
+#question: to infinitely prompt input until valid @ in str
 def get_valid1():
     while True:
         b = 0
@@ -13,6 +14,7 @@ def get_valid1():
 
 #better code:
 
+#use in feature of py
 def get_valid2():
     while True:
         a = input("enter: ")
