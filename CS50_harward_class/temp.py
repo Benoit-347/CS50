@@ -1,7 +1,24 @@
-import re
-pattern = r"(\w+)hello\1hibro"
-text = "abchelloabchibro"
-match = re.match(pattern, text)
+a = [8,9]
+b = [9,10,9]
+c = [9,9,10]
 
-if match:
-    print(match.group())  # Output: abc-abc
+total = 0
+for i in a:
+    total += i*4
+for i in b:
+    total += i*3
+for i in c:
+    total += i*1
+print(total/20)
+
+subjects = [["BCMAT102  MATHEMATICS - I (CSE & ALLIED BRANCHES)",	46,	29],
+["BCHES102  APPLIED CHEMISTRY FOR CS STREAM.",	44,	44],
+[ "BCEDK103 COMPUTER-AIDED ENGINEERING DRAWING",	46,	39],
+["BESCK104A INTRODUCTION TO CIVIL ENGINEERING",	48,	42],
+["BPLCK105B INTRODUCTION TO PYTHON PROGRAMMING",	50,	34],
+["BENGK106  COMMUNICATIVE ENGLISH",	46,	40],
+["BKBKK107  BALAKE KANNADA",	46,	43],
+["BSFHK158  SCIENTIFIC FOUNDATIONS OF HEALTH",	44,	46]]
+
+for i in subjects:
+    print(i[0].ljust(50), i[2]*2)
