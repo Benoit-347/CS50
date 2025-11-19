@@ -5,9 +5,10 @@ class hello:
 var1 = hello()  #object var1 created from class hello
 
 #technical term is instan-tiation of class is object
-# another term for objects is instances
+    # real memory space allocated for data storage- object/instance
+    
 
-# technical term for attributes is instance variables
-# called instance as the data stored is specific to that very object
+# attributes are called instance variables
+# instances are specific to its very object, instance variables form another obj cannot be viewed from a diff obj. 
 
 var1.attribute1 = "hi"  #created a new attribute and at the same time assigned value "hi" to it

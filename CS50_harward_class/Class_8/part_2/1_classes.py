@@ -6,6 +6,7 @@
 
 class Student:
     ...
+    # ... denotes a Dynamic class
 
 a = int()
 print(a)
