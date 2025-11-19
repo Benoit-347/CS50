@@ -1,5 +1,5 @@
 #procedural way to solve problems
-
+# get name and house, n times. Store them into list of (name, houes). Later print them, each node.
 # Q) To take name and house of a person
 list1 = []
 for i in range(int(input("enter num of inputs: "))):

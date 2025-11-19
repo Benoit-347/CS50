@@ -1,4 +1,4 @@
-
+# running programs with a list of numbers, storing config mapped to corresponding fns to run
 def main1():
     name, house = get_student()
     print(f"{name} is in {house} house")
@@ -27,9 +27,9 @@ def main3():
         student[1] = " Gryffindor"
     print(f"{student[0]} is in {student[1]} house")
 
-#we still use interations to get key names, how to go around that? use keys as column names instead of the data itself
-#we want to use custom indexes i.e. keys (like we use index for lists)
-# this is standard as key names shoud be unique and easy to asscess
+# we want to store key names as well, apart from only storing values
+    # how to go around that? Store the keys as well, with a 3rd  party name (i.e. names:- column_names/attribute).
+    # Key names shoud be unique
 
 def main6():
     student = get_student()

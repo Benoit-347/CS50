@@ -9,7 +9,7 @@ accessed by 'benoit', 'harry', 'panda', 'someone'
 
 difference:
 while iterating over them:
-lists return the values
+lists return the iterable values
 dicts return the dict (index) keys
 """
 
@@ -30,7 +30,7 @@ use of {"benoit": "red"} vs {"name": "benoit", "house": "red"}
 """
 # when we use list/tuples, we often can make mistakes when using indexes so it may be better to use dicts
 
-students = {"Harry":"gryffindor", "panda":"ravenclaw"}
+students = {"Harry":"gryffindor", "panda":"ravenclaw"}  # the seach obj cannot be found, other than with ,keys() fn on dict.
 for i in students:
     if i == "Harry":
         students[i] = "Gryffindor"
@@ -41,10 +41,10 @@ for i in students:
 
 # use:
 
-print(students["Harry"])
+print(students["Harry"])    
 
 #or:
 students = {"Harry":{"name":"Harry", "house":"gryffindor"}, "panda":{"name":"panda","house":"ravenclaw"}}
-print(students['Harry'], students["panda"])
+print(students['Harry'], students["panda"], sep = '\n')
 
 #use unique ID instead of names if req
