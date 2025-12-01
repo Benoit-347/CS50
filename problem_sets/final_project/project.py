@@ -4,6 +4,35 @@ from dotenv import load_dotenv  # load .env file
 import matplotlib.pyplot as plt
 import numpy as np
 
+"""
+Todo-
+1. Allow user to select nutrient to display thorugh UI
+
+Additional display info:
+3. Set a simple if else classification if the food is high in bad cholesterol, and sugar.
+4. Display nutrient density score with density = (sum(weighted_important_nutrients)) / calories
+
+Big updates
+5. Multi food cmp
+
+Extras:
+1. keep track and update all keys with new values of dict_memoization data if oldest data, older than 1 year.
+    # dicts in py after 3.7 uses arrays to have spare hash tables, that preserve order of keys that is inserted.
+
+Done:
+
+cleared: 2. Already did memorization, turn it into a local database storage
+method: Store memoized data in dict format and store it to a json file when program terminates. Load the same file back on when programs execution starts, keeping data and appending over n number of program executions.
+            Uses json module with json.dump(<dict>, <file_obj>) and <dict> = json.load(<file_obj>)
+
+Further details:
+    # Using python to format to storing <dict> type hash (faster as build in), and storing as json (Reading- if able to load full file into python- o(n) speed to read inputs. Else- vary slow, fix- shelve)
+    # Medium size (over 1 GB files) shelve- allows partial load of database, smaller file size as uses binary format to store. 
+        # shelve uses random single-key reads/writes; shelve = best for many small persistent operations without loading all data.
+    # High size (and majority of scenarios)- SQLite
+        Even while reading/writing, uses B-Tree lookup. Bulk inserts & queries are available, with optimized features.
+        Has smallest file size.
+"""
 
 
 def request_food(SEARCH_URL, API_KEY, food_query, page_limit):
@@ -77,9 +106,16 @@ def graph_food(first_food_obj, second_food_obj, first_food_data, second_food_dat
     plt.show(block= False)
 
 def main():
-
     global dict_memoization
-    dict_memoization = {}
+    # feature 1
+    import json
+    memoization_file_name = "dict_memoization.json"
+    if not os.path.exists(memoization_file_name):
+        dict_memoization = {}
+    else:
+        with open(memoization_file_name, 'r') as file_obj:
+            dict_memoization = json.load(file_obj)
+        
     user_command = 1
     while (user_command != '0'):
         # laoding api key
@@ -118,7 +154,12 @@ def main():
         graph_food(first_food, second_food, first_data, second_data, nutrients)
         user_command = input("\nContinue food comparision (1/0)? ")
 
-    print("\nExited program sucessfully!\n")
+    print("\nExited program sucessfully!\n")   
+    
+    # feature 1
+
+    with open(memoization_file_name, 'w') as file_obj:
+        json.dump(dict_memoization, file_obj)
 
 if __name__ == "__main__":
     main()
