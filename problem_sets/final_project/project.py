@@ -32,6 +32,60 @@ Further details:
     # High size (and majority of scenarios)- SQLite
         Even while reading/writing, uses B-Tree lookup. Bulk inserts & queries are available, with optimized features.
         Has smallest file size.
+
+    -> UI:
+
+    # Title of the app
+    st.title("Answer these questions to determine your disease")
+
+    # Initialize session state
+    if "submitted" not in st.session_state:
+        st.session_state.submitted = False
+    if "prediction" not in st.session_state:
+        st.session_state.prediction = None
+
+    # Create form for answers
+    if not st.session_state.submitted:
+        with st.form(key="question_form"):
+            answers = []
+            for i, question in enumerate(disease_questions, 1):
+                answer = st.radio(f"Question {i}: {question}", options=["Yes", "No"], key=f"q{i}")
+                answers.append(1 if answer == "Yes" else 0)
+            submit_button = st.form_submit_button(label="Submit Answers")
+
+            if submit_button:
+                # Write to CSV for debugging (optional)
+                write_to_csv("main_V2_data.csv", disease_questions, answers)
+                st.session_state.submitted = True
+                # Run prediction
+                prediction = predict_disease(answers, disease_questions)
+                if prediction:
+                    st.session_state.prediction = prediction
+                    st.success("Prediction complete!")
+                else:
+                    st.error("Prediction failed. Please try again.")
+
+    # Display prediction
+    if st.session_state.submitted and st.session_state.prediction:
+        pred = st.session_state.prediction
+        st.write("### Prediction Result:")
+        st.write(f"**Most likely disease**: {pred['predicted_disease']}")
+        st.write("**Class probabilities**:")
+        for cls, prob in pred['probabilities'].items():
+            st.write(f"{cls}: {prob:.2%}")
+        if pred['predicted_disease'] == "tuberculosis":
+            st.write("Treatment: Long-term antibiotics (e.g., isoniazid, rifampin) for 6-9 months; directly observed therapy (DOT) to ensure compliance.\n\nCommon Causes: Infection by Mycobacterium tuberculosis, spread through airborne droplets; risk factors include close contact with infected individuals, weakened immune systems (e.g., HIV), and living in high-prevalence areas.")
+        
+        elif pred['predicted_disease'] == "pneumonia":
+            st.write("Treatment: Antibiotics for bacterial pneumonia (e.g., amoxicillin); antivirals or antifungals for viral/fungal cases; oxygen therapy and fluids for severe cases.\n\nCommon Causes: Bacterial (Streptococcus pneumoniae), viral (e.g., influenza), or fungal infections; risk factors include smoking, chronic lung diseases, and recent respiratory infections.")
+
+        elif pred['predicted_disease'] == "lung_cancer":
+            st.write("Treatment: Surgery, chemotherapy, radiation, targeted therapy, or immunotherapy, depending on stage and type (small cell or non-small cell).\n\nCommon Causes: Smoking (primary cause), exposure to radon, asbestos, or secondhand smoke; family history and occupational hazards (e.g., mining) increase risk.")
+
+    
+    st.title("Do a deeper analysis with images?")
+
+
 """
 
 
