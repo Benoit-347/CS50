@@ -24,7 +24,14 @@ def get_nutrient(food, name):
     for nutrient in food["foodNutrients"]:
         if nutrient["nutrientName"] == name:
             return nutrient["value"]
-
+        
+def get_nutrient_new(food, name):
+    # this fn runs on the node to response object from request. Searching for matching nutrient name from value to nutrientName key, from node to foodNutrients value, which is from dict food.  
+         # ideal workflow- "foods = [ dict_food, dict_food_2..]; dict_food = {"foodNutrients": [ {"nutrientName": <name_1>, "value": <val_1>}, {"nutrientName": <name_2>, "value": <val_2>} ] }
+    for nutrient in food["foodNutrients"]:
+        if nutrient["nutrientName"] == name:
+            return nutrient["value"], nutrient['unitName']
+        
 def get_all_details_food(foods, food_name):
     if not foods:
         print("No match to food query")
@@ -67,8 +74,13 @@ kcal_1 = get_nutrient(first_food, "Energy")
 prot_1 = get_nutrient(first_food, "Protein")
 fat_1  = get_nutrient(first_food, "Total lipid (fat)")
 carb_1 = get_nutrient(first_food, "Carbohydrate, by difference")
+'unitName'
 
-    
+kcal_2, unit_kcal = get_nutrient_new(first_food, "Energy")
+print(unit_kcal)
+prot_1, unit_kcal = get_nutrient_new(first_food, "Protein")
+print(unit_kcal)
+
 food_name = "mutton"
 
 foods = request_food(food_name, 25)    
@@ -79,7 +91,7 @@ prot_2 = get_nutrient(second_food, "Protein")
 fat_2  = get_nutrient(second_food, "Total lipid (fat)")
 carb_2 = get_nutrient(second_food, "Carbohydrate, by difference")
 
-
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -117,7 +129,7 @@ ax.bar_label(rects2, padding=3)
 plt.tight_layout()
 plt.show()
 
-
+"""
 """
 Tags available:
 1. food.foodcategory.description- snacks, baked, vegetables

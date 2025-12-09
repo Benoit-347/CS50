@@ -3,6 +3,7 @@ import requests
 from dotenv import load_dotenv  # load .env file
 import matplotlib.pyplot as plt
 import numpy as np
+import streamlit
 
 """
 Todo-
@@ -160,6 +161,8 @@ def graph_food(first_food_obj, second_food_obj, first_food_data, second_food_dat
     plt.show(block= False)
 
 def main():
+
+    
     global dict_memoization
     # feature 1
     import json
