@@ -54,8 +54,31 @@ if streamlit.checkbox("filter_1"):
 if streamlit.checkbox("filter_2"):
     filter_2_value = streamlit.slider("filter_2 value: ", 0, 100, 1)
 
-fig = "<the graph before show, return it>"
-streamlit.pyplot(fig)
+
+# setting up fig from matplot lib, to display onto streamlit-
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 1. Data (Simple Sine Wave)
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# 2. Setup Plot
+fig, ax = plt.subplots(figsize=(10, 4))
+
+# 3. Plotting (Line + Soft Fill)
+ax.plot(x, y, color='#2e86de', linewidth=2)
+ax.fill_between(x, y, color='#2e86de', alpha=0.1)
+
+# 4. "Elegant" Styling (Removing the boxy borders)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.set_title("Waveform Analysis", fontsize=14, loc='left')
+ax.grid(axis='y', linestyle='--', alpha=0.3) # Subtle grid
+
+# 5. Render in Streamlit
+streamlit.pyplot(fig, use_container_width=True)
+
 
 streamlit.session_state.counter_end += 1
 print("'Remaining code executed!'" + str(streamlit.session_state.counter_end) + " times")
