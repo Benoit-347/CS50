@@ -183,9 +183,9 @@ def main():
         # Comparing food items
 
         # 1st food item
-        food_name_1 = input("\nEnter first food to compare: ") 
+        food_name_1 = input("\nEnter first food to compare: ")
         # 2nd food item
-        food_name_2 = input("Enter second food to compare: ") 
+        food_name_2 = input("Enter second food to compare: ")
 
         print(f"\nSearching for food: {food_name_1}...")
         foods = request_food(SEARCH_URL, API_KEY, food_name_1, 25)

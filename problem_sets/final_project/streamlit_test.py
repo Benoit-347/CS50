@@ -8,6 +8,8 @@ import streamlit
 # only the state of the pressed button changes in each session. We can take advantage of this state change (which occurs in each session post start of program) by applying a if statement on the button.
     # this causes the code under if block to only execute if the button was pressed, in each session.
 # the session runs in this order: First the whole code runs, with default button states. THen on each button press, the whole code is run again; maintaining the button that triggered the rerun. And the session_state obj maintains data accross every session (more universally accessible than the prgram's global)
+
+    # session_state main
 if "counter_end" not in streamlit.session_state:
     streamlit.session_state.counter_end = 0
 if "counter_start" not in streamlit.session_state:
@@ -18,6 +20,14 @@ print("Now, reached Starting part of code!\n" + str(streamlit.session_state.coun
 streamlit.write("Now, reached Starting part of code!\n" + str(streamlit.session_state.counter_start) + " times")
 
 with streamlit.form(key = f"This is an argument passed to var key of form"):
+
+    # this creates 2 boxes top one and bottom one, returns its ids, which you can use to send it feature info
+    col_1, col_2 = streamlit.columns(2)
+    
+    col_1 = streamlit.text_input("Enter text 1: ")
+    col_2 = streamlit.text_input("Enter text 2: ")
+
+    # protrays two buttons, which has functionality: if pressed, triggers a rerun of this program, sending this button's state to next session. (may be used along with if statement, using its real functionality)
     button_1 = streamlit.form_submit_button("Button submit_1")
     button_2 = streamlit.form_submit_button("Button submit_2")
 
