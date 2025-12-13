@@ -1,9 +1,9 @@
-import os, sys
-import requests
+import os, sys      # opening files, and exiting program
+import requests     # sending api requests
 from dotenv import load_dotenv  # load .env file
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt     # for plotting bar graphs
 import numpy as np
-import streamlit
+import json # loading json file, which we create ourselves to store previously searched food names
 
 """
 Todo-
@@ -90,7 +90,7 @@ Further details:
 """
 
 
-def request_food(SEARCH_URL, API_KEY, food_query, page_limit):
+def request_food(SEARCH_URL, API_KEY, food_query, page_limit, dict_memoization):
     
     # check memoized data first
     if food_query in dict_memoization:
@@ -132,14 +132,14 @@ def get_nutrients_food(food):
 def graph_food(first_food_obj, second_food_obj, first_food_data, second_food_data, nutrients):
 
     # 1. setup label
-    label_1 = first_food_obj["description"]
-    label_2 = second_food_obj["description"]
+    label_1 = first_food_obj['description']
+    label_2 = second_food_obj['description']
 
     # 2. SETUP PLOT
     x = np.arange(len(nutrients))  # Label locations
     width = 0.35  # Width of the bars
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     # 3. PLOT BARS
     # We shift the position of the bars by +/- width/2 so they sit side-by-side
@@ -153,24 +153,52 @@ def graph_food(first_food_obj, second_food_obj, first_food_data, second_food_dat
     ax.set_xticklabels(nutrients)
     ax.legend()
 
+    # Adjust the plot area to make space at the bottom (bottom=0.2 reserves 20% space)
+    plt.subplots_adjust(bottom=0.25) 
+    
+    # Add Text 1: Positioned below the axis, aligned left
+    
+    if 'ingredients' in first_food_obj:
+        fig.text(
+            0.05, 0.20, # x=5% from left, y=20% from bottom (in figure coordinates)
+            f"{first_food_obj['description']}- ingredients: \n{first_food_obj['ingredients'][:150]}", 
+            wrap=True, 
+            fontsize=9, 
+            color='#66b3ff', # Match bar color
+            transform=fig.transFigure # Use figure coordinates for stability
+        )
+    
+    if 'ingredients' in second_food_obj:
+    # Add Text 2: Positioned slightly lower
+        fig.text(
+            0.05, 0.15, # x=5% from left, y=15% from bottom
+            f"{second_food_obj['description']}- ingredients: \n{second_food_obj['ingredients'][:150]}", 
+            wrap=True, 
+            fontsize=9, 
+            color='#ff9999', # Match bar color
+            transform=fig.transFigure
+        )
+
     # Optional: Add the specific numbers on top of the bars for clarity
     ax.bar_label(rects1, padding=3)
     ax.bar_label(rects2, padding=3)
 
-    plt.tight_layout()
+    plt.tight_layout(rect=[0, 0.25, 1, 1])
     plt.show(block= False)
 
-def main():
-
-    global dict_memoization
+def load_stored_json(memoization_file_name):
     # feature 1
-    import json
-    memoization_file_name = "dict_memoization.json"
+        # storing previously searched food data.
     if not os.path.exists(memoization_file_name):
         dict_memoization = {}
     else:
         with open(memoization_file_name, 'r') as file_obj:
             dict_memoization = json.load(file_obj)
+    return dict_memoization
+
+def main():
+    memoization_file_name = "dict_memoization.json"
+    dict_memoization = load_stored_json(memoization_file_name)
 
     user_command = 1
     while (user_command != '0'):
@@ -185,19 +213,19 @@ def main():
         # Comparing food items
 
         # 1st food item
-        food_name_1 = input("\nEnter first food to compare: ") 
+        food_name_1 = input("\nEnter first food to compare: ").lower()
         # 2nd food item
-        food_name_2 = input("Enter second food to compare: ") 
+        food_name_2 = input("Enter second food to compare: ").lower()
 
         print(f"\nSearching for food: {food_name_1}...")
-        foods = request_food(SEARCH_URL, API_KEY, food_name_1, 25)
+        foods = request_food(SEARCH_URL, API_KEY, food_name_1, 25, dict_memoization)
         first_food = foods[0]
         print(f"Found- {first_food["description"]}")
         #obtain relevant nutrients of first food
         first_data = get_nutrients_food(first_food)
 
         print(f"Searching for food: {food_name_2}...")
-        foods = request_food(SEARCH_URL, API_KEY, food_name_2, 25)  
+        foods = request_food(SEARCH_URL, API_KEY, food_name_2, 25, dict_memoization)  
         second_food = foods[0]
         print(f"Found: {second_food["description"]}")
         #obtain relevant nutrients of second food

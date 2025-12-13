@@ -16,17 +16,21 @@ if "counter_start" not in streamlit.session_state:
     streamlit.session_state.counter_start = 0
 
 streamlit.session_state.counter_start += 1
-print("Now, reached Starting part of code!\n" + str(streamlit.session_state.counter_start) + " times")
+print("Now, reached 'Starting part of code!'" + str(streamlit.session_state.counter_start) + " times")
 streamlit.write("Now, reached Starting part of code!\n" + str(streamlit.session_state.counter_start) + " times")
 
 with streamlit.form(key = f"This is an argument passed to var key of form"):
+    # a text can be input only inside a form; and every input mandatorily needs a button (as when the form closes, the input is lost; hence if no button was triggered brefore form closes, the input becomes useless; hence streamlit making it mandatory).
 
+    streamlit.write("inside form")
+    streamlit.title("columns test")
     # this creates 2 boxes top one and bottom one, returns its ids, which you can use to send it feature info
     col_1, col_2 = streamlit.columns(2)
     
     col_1 = streamlit.text_input("Enter text 1: ")
     col_2 = streamlit.text_input("Enter text 2: ")
 
+    streamlit.title("buttons test")
     # protrays two buttons, which has functionality: if pressed, triggers a rerun of this program, sending this button's state to next session. (may be used along with if statement, using its real functionality)
     button_1 = streamlit.form_submit_button("Button submit_1")
     button_2 = streamlit.form_submit_button("Button submit_2")
@@ -38,7 +42,21 @@ with streamlit.form(key = f"This is an argument passed to var key of form"):
     if button_2:
         print("Secong button pressed")
         streamlit.write("Second button pressed")
+    
+    streamlit.write("last line of form")
+
+# notice these filters are outside the forms space. We cannot apply checkbox + sliders inside a form
+streamlit.title("filters test")
+
+if streamlit.checkbox("filter_1"):
+    filter_1_value = streamlit.slider("filter_1 value: ", 0, 100, 1)
+
+if streamlit.checkbox("filter_2"):
+    filter_2_value = streamlit.slider("filter_2 value: ", 0, 100, 1)
+
+fig = "<the graph before show, return it>"
+streamlit.pyplot(fig)
 
 streamlit.session_state.counter_end += 1
-print("Remanining code executed!\n" + str(streamlit.session_state.counter_end) + " times")
+print("'Remaining code executed!'" + str(streamlit.session_state.counter_end) + " times")
 streamlit.write("Remanining code executed!\n" + str(streamlit.session_state.counter_end) + " times")

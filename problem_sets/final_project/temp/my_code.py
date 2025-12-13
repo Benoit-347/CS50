@@ -65,7 +65,7 @@ for food in foods:
 
 # TRIAL program
     
-food_name = "chicken" # Apple, baked; Apple, dried; Apple, raw
+food_name = "idly" # Apple, baked; Apple, dried; Apple, raw
 
 foods = request_food(food_name, 25)    
 
@@ -91,6 +91,9 @@ prot_2 = get_nutrient(second_food, "Protein")
 fat_2  = get_nutrient(second_food, "Total lipid (fat)")
 carb_2 = get_nutrient(second_food, "Carbohydrate, by difference")
 
+if 'ingredients' in first_food:
+    print(first_food['ingredients'])
+    
 """
 import matplotlib.pyplot as plt
 import numpy as np
