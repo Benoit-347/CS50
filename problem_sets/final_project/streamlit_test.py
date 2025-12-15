@@ -56,6 +56,7 @@ with streamlit.form(key = f"This is an argument passed to var key of form"):
 # notice these filters are outside the forms space. We cannot apply checkbox + sliders inside a form
 streamlit.title("filters test")
 
+# event the checkbox acts like a button, as it causes the whole program to rerun as well.
 if streamlit.checkbox("filter_1"):
     filter_1_value = streamlit.slider("filter_1 value: ", 0, 100, 1)
 

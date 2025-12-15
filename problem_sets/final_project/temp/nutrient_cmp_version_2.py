@@ -14,7 +14,7 @@ if False:
 
 
     Todo-
-    1. Enable user to set filtering to values (min/max). So we iterate over to nxt food, until all conditions match. (Also keep score to find best match? (largest of a list, iteratively algo))
+    1. Allow user to select nutrient to display thorugh UI
     2. Allow users to show bad nutrient graph as well.
 
     Additional display info:
@@ -47,9 +47,6 @@ if False:
     Implemented UI on program, using input and submit button,
         atexit module to run save fn only after exit program is initiated.
 
-    3.
-    Implemented custom selected nutrient display, using 'multiselect' option in streamlit, instead of repeated checkbox selection.
-
     """
 
 
@@ -81,13 +78,16 @@ def get_nutrient(food, name):
         if nutrient["nutrientName"] == name:
             return nutrient["value"]
 
-def get_nutrients_food(food, selected_nutrients):
+def get_nutrients_food(food):
     if not food:
         print("No match to food query")
-    result = []
-    for i in selected_nutrients:
-        result.append(get_nutrient(food, i))     #  # ideal workflow- "foods = [ dict_food, dict_food_2..]; dict_food = {"foodNutrients": [ {"nutrientName": <name_1>, "value": <val_1>}, {"nutrientName": <name_2>, "value": <val_2>} ] }
-    return result
+
+    kcal = get_nutrient(food, "Energy")     #  # ideal workflow- "foods = [ dict_food, dict_food_2..]; dict_food = {"foodNutrients": [ {"nutrientName": <name_1>, "value": <val_1>}, {"nutrientName": <name_2>, "value": <val_2>} ] }
+    prot = get_nutrient(food, "Protein")
+    fat  = get_nutrient(food, "Total lipid (fat)")
+    carb = get_nutrient(food, "Carbohydrate, by difference")
+
+    return kcal, prot, fat, carb
 
 def graph_food(first_food_obj, second_food_obj, first_food_data, second_food_data, nutrients):
 
@@ -198,52 +198,41 @@ def main():
         # 2nd food item
         input_box_2 = streamlit.text_input("Enter second food to compare: ").lower()
 
-    # Multiselect nutrient
-            #  Sends a list, which a user can see IN UI- scrollable, and select them, appearing like tabs on selected space
-        streamlit.title("Nutrients to display")
-        list_nutrients = ['Protein', 'Total lipid (fat)', 'Carbohydrate, by difference', 'Energy', 'Alcohol, ethyl', 'Water', 'Caffeine', 'Theobromine', 'Total Sugars', 'Fiber, total dietary',
-                          'Calcium, Ca', 'Iron, Fe', 'Magnesium, Mg', 'Phosphorus, P', 'Potassium, K', 'Sodium, Na', 'Zinc, Zn', 'Copper, Cu', 'Selenium, Se', 'Retinol', 'Vitamin A, RAE',
-                          'Carotene, beta', 'Carotene, alpha', 'Vitamin E (alpha-tocopherol)', 'Vitamin D (D2 + D3)', 'Cryptoxanthin, beta', 'Lycopene', 'Lutein + zeaxanthin',
-                          'Vitamin C, total ascorbic acid', 'Thiamin', 'Riboflavin', 'Niacin', 'Vitamin B-6', 'Folate, total', 'Vitamin B-12', 'Choline, total', 'Vitamin K (phylloquinone)',
-                          'Folic acid', 'Folate, food', 'Folate, DFE', 'Vitamin E, added', 'Vitamin B-12, added', 'Cholesterol', 'Fatty acids, total saturated',
-                          'SFA 4:0', 'SFA 6:0', 'SFA 8:0', 'SFA 10:0', 'SFA 12:0', 'SFA 14:0', 'SFA 16:0', 'SFA 18:0', 'MUFA 18:1', 'PUFA 18:2', 'PUFA 18:3', 'PUFA 20:4', 'PUFA 22:6 n-3 (DHA)',
-                          'MUFA 16:1', 'PUFA 18:4', 'MUFA 20:1', 'PUFA 20:5 n-3 (EPA)', 'MUFA 22:1', 'PUFA 22:5 n-3 (DPA)', 'Fatty acids, total monounsaturated', 'Fatty acids, total polyunsaturated']
-        
-        selected_nutrients = streamlit.multiselect("Select Nutrients to compare: ", options = list_nutrients, default= ['Energy', 'Protein', 'Total lipid (fat)', 'Fiber, total dietary'])
-
-    # BUTTON, which also sends api request
+    # BUTTON, send api request
         button_1 = streamlit.form_submit_button("Submit")
 
-    if button_1:
-        with streamlit.spinner(f"\nSearching for food: {input_box_1}..."):
-            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_1, 25, dict_memoization)
-            first_food = foods[0]
-        streamlit.success(f"Found- {first_food["description"]}")
-        #obtain relevant nutrients of first food
-        first_data = get_nutrients_food(first_food, selected_nutrients)
+        if button_1:
+            with streamlit.spinner(f"\nSearching for food: {input_box_1}..."):
+                foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_1, 25, dict_memoization)
+                first_food = foods[0]
+            streamlit.success(f"Found- {first_food["description"]}")
+            #obtain relevant nutrients of first food
+            first_data = get_nutrients_food(first_food)
 
-        with streamlit.spinner(f"Searching for food: {input_box_2}..."):
-            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_2, 25, dict_memoization)  
-            second_food = foods[0]
-        streamlit.success(f"Found: {second_food["description"]}")
-        #obtain relevant nutrients of second food
-        second_data = get_nutrients_food(second_food, selected_nutrients)
+            with streamlit.spinner(f"Searching for food: {input_box_2}..."):
+                foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_2, 25, dict_memoization)  
+                second_food = foods[0]
+            streamlit.success(f"Found: {second_food["description"]}")
+            #obtain relevant nutrients of second food
+            second_data = get_nutrients_food(second_food)
+        
+            nutrients = ['Kcal', 'Protein', 'Fat', 'Carbs']
+        
+            # PLOT a bar graph of the 2 foods
+
+            streamlit.title(f"\nBar graph of nutrients")
+            streamlit.pyplot(graph_food(first_food, second_food, first_data, second_data, nutrients))
+
+            if 'ingredients' in first_food:
+                streamlit.write(f"{first_food["description"]} ingredients: ")
+                streamlit.write(f"{first_food["ingredients"]}")
+            if 'ingredients' in second_food:
+                streamlit.write(f"{second_food["description"]} ingredients: ")
+                streamlit.write(f"{second_food["ingredients"]}")
+
+            streamlit.session_state.count += 1  # keeps track of number of times program was executed
+            streamlit.write(f"\n\nExecuted program {streamlit.session_state.count} times in this session!")
     
-        # PLOT a bar graph of the 2 foods
-
-        streamlit.title(f"\nBar graph of nutrients")
-        streamlit.pyplot(graph_food(first_food, second_food, first_data, second_data, selected_nutrients))
-
-        if 'ingredients' in first_food:
-            streamlit.write(f"{first_food["description"]} ingredients: ")
-            streamlit.write(f"{first_food["ingredients"]}")
-        if 'ingredients' in second_food:
-            streamlit.write(f"{second_food["description"]} ingredients: ")
-            streamlit.write(f"{second_food["ingredients"]}")
-
-        streamlit.session_state.count += 1  # keeps track of number of times program was executed
-        streamlit.write(f"\n\nExecuted program {streamlit.session_state.count} times in this session!")
-
     # Below code makes fn 'save_json' run only when terminating
     # every time atexit.register(fn_name) is called, sends the fn to a queue, which runs at program termination
         # Below makes it call atexit.register only once
@@ -257,5 +246,18 @@ if __name__ == "__main__":
 if False:
     """
     NUTRIENTS AVAILABLE:
-
+        Protein
+        Total lipid (fat)
+        Carbohydrate, by difference
+        Energy
+        Total Sugars
+        Fiber, total dietary
+        Calcium, Ca
+        Iron, Fe
+        Sodium, Na
+        Vitamin A, IU
+        Vitamin C, total ascorbic acid
+        Cholesterol
+        Fatty acids, total trans
+        Fatty acids, total saturated
     """

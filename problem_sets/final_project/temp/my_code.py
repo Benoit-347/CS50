@@ -93,7 +93,27 @@ carb_2 = get_nutrient(second_food, "Carbohydrate, by difference")
 
 if 'ingredients' in first_food:
     print(first_food['ingredients'])
-    
+# list_new = ['Protein', 'Total lipid (fat)', 'Carbohydrate, by difference', 'Energy', 'Alcohol, ethyl', 'Water', 'Caffeine', 'Theobromine', 'Total Sugars', 'Fiber, total dietary', 'Calcium, Ca', 'Iron, Fe', 'Magnesium, Mg', 'Phosphorus, P', 'Potassium, K', 'Sodium, Na', 'Zinc, Zn', 'Copper, Cu', 'Selenium, Se', 'Retinol', 'Vitamin A, RAE', 'Carotene, beta', 'Carotene, alpha', 'Vitamin E (alpha-tocopherol)', 'Vitamin D (D2 + D3)', 'Cryptoxanthin, beta', 'Lycopene', 'Lutein + zeaxanthin', 'Vitamin C, total ascorbic acid', 'Thiamin', 'Riboflavin', 'Niacin', 'Vitamin B-6', 'Folate, total', 'Vitamin B-12', 'Choline, total', 'Vitamin K (phylloquinone)', 'Folic acid', 'Folate, food', 'Folate, DFE', 'Vitamin E, added', 'Vitamin B-12, added', 'Cholesterol', 'Fatty acids, total saturated', 'SFA 4:0', 'SFA 6:0', 'SFA 8:0', 'SFA 10:0', 'SFA 12:0', 'SFA 14:0', 'SFA 16:0', 'SFA 18:0', 'MUFA 18:1', 'PUFA 18:2', 'PUFA 18:3', 'PUFA 20:4', 'PUFA 22:6 n-3 (DHA)', 'MUFA 16:1', 'PUFA 18:4', 'MUFA 20:1', 'PUFA 20:5 n-3 (EPA)', 'MUFA 22:1', 'PUFA 22:5 n-3 (DPA)', 'Fatty acids, total monounsaturated', 'Fatty acids, total polyunsaturated']
+list_new = []
+for nutrient in first_food["foodNutrients"]:
+    list_new.append(nutrient['nutrientName'])
+print(list_new)
+
+list_new_2 = []
+for nutrient in second_food["foodNutrients"]:
+    list_new_2.append(nutrient['nutrientName'])
+
+for i in range(len(list_new)):
+    if list_new[i] != list_new_2[i]:
+        print(f"The nutrient: {list_new[i]} does not match {list_new_2[i]}")
+    else:
+        print("True")
+
+dict_1 = {}
+for i in list_new_2:
+    dict_1[i] = False
+
+print(dict_1)
 """
 import matplotlib.pyplot as plt
 import numpy as np
