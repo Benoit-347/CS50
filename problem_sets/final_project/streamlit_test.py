@@ -3,6 +3,7 @@
     # Here it hence maintains an infinite loop (until we specify a code to end the program explicitly)
 
 import streamlit
+import time # for sleep fn
 
 # by running this program, you may notice, at each session, the code before button is executed regarless of button input, the end is also executed regardless of button input.
 # only the state of the pressed button changes in each session. We can take advantage of this state change (which occurs in each session post start of program) by applying a if statement on the button.
@@ -29,6 +30,13 @@ with streamlit.form(key = f"This is an argument passed to var key of form"):
     
     col_1 = streamlit.text_input("Enter text 1: ")
     col_2 = streamlit.text_input("Enter text 2: ")
+
+    streamlit.write(col_1)
+
+    streamlit.title("Spinner test")
+    with streamlit.spinner("Spining animation..."):     # use this to show a replaceable text. (replaced by the text in .success() method)
+        time.sleep(3)
+    streamlit.success("Spinning completed")
 
     streamlit.title("buttons test")
     # protrays two buttons, which has functionality: if pressed, triggers a rerun of this program, sending this button's state to next session. (may be used along with if statement, using its real functionality)
