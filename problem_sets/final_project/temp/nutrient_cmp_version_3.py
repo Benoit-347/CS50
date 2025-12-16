@@ -7,7 +7,6 @@ import json # loading json file, which we create ourselves to store previously s
 import streamlit
 import atexit   # to do fns when a user exits program
 
-MAX_PER_REQUEST = 25
 if False:
     """
     
@@ -15,6 +14,9 @@ if False:
 
 
     Todo-
+    1. Enable user to set filtering to values (min/max). So we iterate over to nxt food, until all conditions match. (Also keep score to find best match? (largest of a list, iteratively algo))
+    2. Allow users to show bad nutrient graph as well.
+
     Additional display info:
     3. (follwed with 2nd feature) Do self chk on food, to see if it is relatively high on bad nutrients using a simple if else classification if the food is high in bad cholesterol, and sugar.
     4. Display nutrient density score with density = (sum(weighted_important_nutrients)) / calories
@@ -48,12 +50,6 @@ if False:
     3.
     Implemented custom selected nutrient display, using 'multiselect' option in streamlit, instead of repeated checkbox selection.
 
-    4.
-    Added a Filter feature to iteratively search for food with a specified minimum value of nutrients, under the given food name.
-    completed: Enable user to set filtering to values (min/max). So we iterate over to nxt food, until all conditions match. (Also keep score to find best match? (largest of a list, iteratively algo))
-
-    5. 
-    Made a seperate graph for bad nutrients
     """
 
 
@@ -164,17 +160,6 @@ def save_json(memoization_file_name, dict_memoization):
         json.dump(dict_memoization, file_obj)
     print("Saved file, holding results")
 
-def chk_nutrient_filter(chk_data, dict_filter_data, maximum):
-    i = 0
-    new_max = 0
-    matched = True
-    for key in dict_filter_data:
-        if dict_filter_data[key] <= chk_data[i]:
-            new_max += 1
-        else:
-            matched = False
-        i += 1
-    return matched, max(new_max, maximum)
 
 def main():
 
@@ -226,63 +211,31 @@ def main():
         
         selected_nutrients = streamlit.multiselect("Select Nutrients to compare: ", options = list_nutrients, default= ['Energy', 'Protein', 'Total lipid (fat)', 'Fiber, total dietary'])
 
+
         if 'dict_filter_values' not in streamlit.session_state:
             streamlit.session_state.dict_filter_values = {}
         for i in selected_nutrients:
             streamlit.session_state.dict_filter_values[i] = streamlit.slider(i, 0, 100)
 
-
-        choice = streamlit.radio("Show bad nutrient graph?", ["No", "Yes"], horizontal=True)
-        streamlit.form_submit_button("Apply")
-
-        if choice == "Yes":
-            streamlit.session_state.show_bad = True
-            streamlit.write("Bad nutrient selection, max criteria, graph")
-            selected_nutrients_bad = streamlit.multiselect("Select bad nutrients to compare: ", ['Fatty acids, total saturated', 'Total Sugars', 'Cholesterol', 'Sodium, Na'], default=['Fatty acids, total saturated', 'Total Sugars', 'Cholesterol'])
-            
-        else:
-            streamlit.session_state.show_bad = False
+        streamlit.write(str(streamlit.session_state.dict_filter_values))
 
     # BUTTON, which also sends api request
         button_1 = streamlit.form_submit_button("Submit")
 
     if button_1:
         with streamlit.spinner(f"\nSearching for food: {input_box_1}..."):
-            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_1, MAX_PER_REQUEST, dict_memoization)
-            for i in range(len(foods)):
-                first_food = foods[i]
-                first_data = get_nutrients_food(first_food, selected_nutrients)
-                max_old = 0
-                result = 0
-                match, max = chk_nutrient_filter(first_data, streamlit.session_state.dict_filter_values, max_old)
-                if (match):
-                    break
-                elif (max_old < max):
-                    result = i
-                    max_old = max
-            else:
-                first_data = first_food[result]
-        print(f"Obtained first food at {i+1}th filter check")
+            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_1, 25, dict_memoization)
+            first_food = foods[0]
         streamlit.success(f"Found- {first_food["description"]}")
         #obtain relevant nutrients of first food
+        first_data = get_nutrients_food(first_food, selected_nutrients)
 
         with streamlit.spinner(f"Searching for food: {input_box_2}..."):
-            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_2, MAX_PER_REQUEST, dict_memoization)  
-            for i in range(len(foods)):
-                second_food = foods[i]
-                second_data = get_nutrients_food(second_food, selected_nutrients)
-                max_old = 0
-                result = 0
-                match, max = chk_nutrient_filter(second_data, streamlit.session_state.dict_filter_values, max_old)
-                if (match):
-                    break
-                elif (max_old < max):
-                    result = i
-                    max_old = max
-            else:
-                second_data = second_food[result]
-        print(f"Obtained second food at {i+1}th filter check")
+            foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_2, 25, dict_memoization)  
+            second_food = foods[0]
         streamlit.success(f"Found: {second_food["description"]}")
+        #obtain relevant nutrients of second food
+        second_data = get_nutrients_food(second_food, selected_nutrients)
     
         # PLOT a bar graph of the 2 foods
 
@@ -295,14 +248,6 @@ def main():
         if 'ingredients' in second_food:
             streamlit.write(f"{second_food["description"]} ingredients: ")
             streamlit.write(f"{second_food["ingredients"]}")
-
-
-        if streamlit.session_state.show_bad:
-            first_data_b = get_nutrients_food(first_food, selected_nutrients_bad)
-            second_data_b = get_nutrients_food(second_food, selected_nutrients_bad)
-
-            streamlit.title(f"\nBar graph of the bad nutrients")
-            streamlit.pyplot(graph_food(first_food, second_food, first_data_b, second_data_b, selected_nutrients_bad))
 
         streamlit.session_state.count += 1  # keeps track of number of times program was executed
         streamlit.write(f"\n\nExecuted program {streamlit.session_state.count} times in this session!")

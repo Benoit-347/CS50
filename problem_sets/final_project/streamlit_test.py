@@ -23,7 +23,7 @@ streamlit.write("Now, reached Starting part of code!\n" + str(streamlit.session_
 with streamlit.form(key = f"This is an argument passed to var key of form"):
     # a text can be input only inside a form; and every input mandatorily needs a button (as when the form closes, the input is lost; hence if no button was triggered brefore form closes, the input becomes useless; hence streamlit making it mandatory).
 
-    streamlit.write("inside form")
+    streamlit.subheader("inside form")
     streamlit.title("columns test")
     # this creates 2 boxes top one and bottom one, returns its ids, which you can use to send it feature info
     col_1, col_2 = streamlit.columns(2)
@@ -51,7 +51,7 @@ with streamlit.form(key = f"This is an argument passed to var key of form"):
         print("Secong button pressed")
         streamlit.write("Second button pressed")
     
-    streamlit.write("last line of form")
+    streamlit.subheader("last line of form")
 
 # notice these filters are outside the forms space. We cannot apply checkbox + sliders inside a form
 streamlit.title("filters test")
@@ -62,6 +62,17 @@ if streamlit.checkbox("filter_1"):
 
 if streamlit.checkbox("filter_2"):
     filter_2_value = streamlit.slider("filter_2 value: ", 0, 100, 1)
+
+# faster and visually better, multi checkbox for niche of selection only
+list_nutrients = ['Protein', 'Total lipid (fat)', 'Carbohydrate, by difference', 'Energy', 'Alcohol, ethyl', 'Water', 'Caffeine', 'Theobromine', 'Total Sugars', 'Fiber, total dietary',
+                          'Calcium, Ca', 'Iron, Fe', 'Magnesium, Mg', 'Phosphorus, P', 'Potassium, K', 'Sodium, Na', 'Zinc, Zn', 'Copper, Cu', 'Selenium, Se', 'Retinol', 'Vitamin A, RAE',
+                          'Carotene, beta', 'Carotene, alpha', 'Vitamin E (alpha-tocopherol)', 'Vitamin D (D2 + D3)', 'Cryptoxanthin, beta', 'Lycopene', 'Lutein + zeaxanthin',
+                          'Vitamin C, total ascorbic acid', 'Thiamin', 'Riboflavin', 'Niacin', 'Vitamin B-6', 'Folate, total', 'Vitamin B-12', 'Choline, total', 'Vitamin K (phylloquinone)',
+                          'Folic acid', 'Folate, food', 'Folate, DFE', 'Vitamin E, added', 'Vitamin B-12, added', 'Cholesterol', 'Fatty acids, total saturated',
+                          'SFA 4:0', 'SFA 6:0', 'SFA 8:0', 'SFA 10:0', 'SFA 12:0', 'SFA 14:0', 'SFA 16:0', 'SFA 18:0', 'MUFA 18:1', 'PUFA 18:2', 'PUFA 18:3', 'PUFA 20:4', 'PUFA 22:6 n-3 (DHA)',
+                          'MUFA 16:1', 'PUFA 18:4', 'MUFA 20:1', 'PUFA 20:5 n-3 (EPA)', 'MUFA 22:1', 'PUFA 22:5 n-3 (DPA)', 'Fatty acids, total monounsaturated', 'Fatty acids, total polyunsaturated']
+        
+selected_nutrients = streamlit.multiselect("Select Nutrients to compare: ", options = list_nutrients, default= ['Energy', 'Protein', 'Total lipid (fat)', 'Fiber, total dietary'])
 
 
 # setting up fig from matplot lib, to display onto streamlit-
@@ -87,6 +98,7 @@ ax.grid(axis='y', linestyle='--', alpha=0.3) # Subtle grid
 
 # 5. Render in Streamlit
 streamlit.pyplot(fig, use_container_width=True)
+
 
 
 streamlit.session_state.counter_end += 1
