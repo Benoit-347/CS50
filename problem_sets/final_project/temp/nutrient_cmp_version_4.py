@@ -247,13 +247,16 @@ def main():
         button_1 = streamlit.form_submit_button("Submit")
 
     if button_1:
+        if (not input_box_1 ) or (not input_box_2):
+            streamlit.write("Enter food names!")
+            streamlit.stop()
         with streamlit.spinner(f"\nSearching for food: {input_box_1}..."):
             foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_1, MAX_PER_REQUEST, dict_memoization)
+            max_old = 0
+            result = 0
             for i in range(len(foods)):
                 first_food = foods[i]
                 first_data = get_nutrients_food(first_food, selected_nutrients)
-                max_old = 0
-                result = 0
                 match, max = chk_nutrient_filter(first_data, streamlit.session_state.dict_filter_values, max_old)
                 if (match):
                     break
@@ -261,26 +264,30 @@ def main():
                     result = i
                     max_old = max
             else:
-                first_data = first_food[result]
+                first_food = foods[result]
+                first_data = get_nutrients_food(first_food, selected_nutrients)
         print(f"Obtained first food at {i+1}th filter check")
         streamlit.success(f"Found- {first_food["description"]}")
         #obtain relevant nutrients of first food
 
         with streamlit.spinner(f"Searching for food: {input_box_2}..."):
             foods = request_food(SEARCH_URL, streamlit.session_state.api_key, input_box_2, MAX_PER_REQUEST, dict_memoization)  
+            max_old = 0
+            result = 0
             for i in range(len(foods)):
                 second_food = foods[i]
                 second_data = get_nutrients_food(second_food, selected_nutrients)
-                max_old = 0
-                result = 0
                 match, max = chk_nutrient_filter(second_data, streamlit.session_state.dict_filter_values, max_old)
                 if (match):
                     break
                 elif (max_old < max):
                     result = i
                     max_old = max
+                    print(max, max_old)
             else:
-                second_data = second_food[result]
+                second_food = foods[result]
+                second_data = get_nutrients_food(second_food, selected_nutrients)
+                print(f"The values: {result, len(foods)}")
         print(f"Obtained second food at {i+1}th filter check")
         streamlit.success(f"Found: {second_food["description"]}")
     
