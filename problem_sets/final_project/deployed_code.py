@@ -1,6 +1,5 @@
 import os      # opening files, and exiting program
 import requests     # sending api requests
-from dotenv import load_dotenv  # load .env file
 import matplotlib.pyplot as plt     # for plotting bar graphs
 import numpy as np
 import json # loading json file, which we create ourselves to store previously searched food names
@@ -192,14 +191,14 @@ def main():
     if 'loaded' not in streamlit.session_state:
         dict_memoization = load_stored_json(memoization_file_name)
         streamlit.session_state.loaded = 1
-        streamlit.session_state.dict_mem = dict_memoization    
+        streamlit.session_state.dict_mem = dict_memoization
         # loading api key
-        load_dotenv()
-        API_KEY = os.getenv("USDA_API_KEY")
-        if not API_KEY:
+        try:
+            API_KEY = streamlit.secrets["USDA_API_KEY"]
+            streamlit.session_state.api_key = API_KEY
+        except:
             streamlit.error("API Key not found!")
             streamlit.stop()
-        streamlit.session_state.api_key = API_KEY
 
     dict_memoization = streamlit.session_state.dict_mem
 
@@ -261,7 +260,6 @@ def main():
         print(f"Please Change food name and try again\n")
         streamlit.write(f"Did not find any results for food: {streamlit.session_state.food_name}")
         streamlit.write(f"Please change Food Name and Try again")
-
     if button_1:
         if (not input_box_1 ) or (not input_box_2):
             streamlit.write("Enter food names!")
@@ -347,6 +345,7 @@ def main():
         with streamlit.spinner(f"\nSaving results to  cache json file: {memoization_file_name}..."):
             save_json(memoization_file_name, dict_memoization)
         streamlit.write(f"Saved the seatch results to cache json file: {memoization_file_name}")
+
 
     if "terminated" not in streamlit.session_state:
         atexit.register(save_json, memoization_file_name, dict_memoization)
