@@ -7,6 +7,7 @@ import json # loading json file, which we create ourselves to store previously s
 import streamlit
 import atexit   # to do fns when a user exits program
 
+# Note: this version, slider filtering is not implemented functionally
 if False:
     """
     
